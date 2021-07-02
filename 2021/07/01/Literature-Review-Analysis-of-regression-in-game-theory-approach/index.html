@@ -251,7 +251,36 @@
 <h2 id="Why-to-use-Shapley-imputation"><a href="#Why-to-use-Shapley-imputation" class="headerlink" title="Why to use Shapley imputation?"></a>Why to use Shapley imputation?</h2><ol>
 <li>It is an axiomatic approach instead of an heuristic procedure</li>
 </ol>
-<h2 id="Algorithm-details"><a href="#Algorithm-details" class="headerlink" title="Algorithm details"></a>Algorithm details</h2><p>for regression like:<br>$$y_i=\beta_1x_{1i}+\beta_2x_{2i}+\beta_3x_{3i} + … + \beta_nx_{ni} + e_i$$</p>
+<h2 id="Algorithm-details"><a href="#Algorithm-details" class="headerlink" title="Algorithm details"></a>Algorithm details</h2><p>for regression like:<br>$$ y_i=\beta_1x_{1i}+\beta_2x_{2i}+\beta_3x_{3i} + … + \beta_nx_{ni} + e_i$$<br>where y and xs are standardized variables. e is a Guassian Random Er ror and i is a number of observation. </p>
+<p>$$S^2 = e^Te = (y-Xb)^T(y-Xb)=1-2b^Tr + b^TCb$$</p>
+<p>where $C$ is the correlations matrix. and $r$ is the sample correlations between each $x_j$ and the dependent variable $y$.</p>
+<p>$$C=X^TX$$</p>
+<p>$$Cb = r$$</p>
+<p>Minimizing $S^2$ is equaivalent to maximize the multiple determination $R^2$</p>
+<p>$$R^2 = 1-S^2=2b^Tr - b^TCb=\sum\limits_jb_j(2r-Cb)_j$$</p>
+<p>Since $Cb=r$</p>
+<p>$$R^2=b^Tr=\sum\limits_jb_jr_j$$</p>
+<p>And net effects (NEF) of each 4th regressor is:</p>
+<p>$$NEF_j=b_jr_j$$</p>
+<p>There are other more reasonable indices for evaluation of predictor importance. </p>
+<p>For example, the share of $x_j$ could be defined by the square of the partial correlation between $y$ and $x_j$ with fixed other x’s</p>
+<p>$$R^2_{yj}=(R^2 - R^2_{-j})/(1-R^2_{-j})$$</p>
+<p>where $R^2$ demotes to multiple determination as mentioned above and  $R^2_{-j}$ denotes to multiple determination without $x_j$</p>
+<p>Also, we can use </p>
+<p>$$U_j=(R^2-R^2_{-j})$$</p>
+<p>when $R_{-j}&lt;&lt;1$, $U_j$ is converged to $R^2_{yj}$</p>
+<p>Here the original definition for Shapley Value imputation is</p>
+<p>$$S_j=\sum\limits_{all\ M} \gamma_n(M)[v(M\cup{j})-v(M)]$$</p>
+<p>with weights of proportions $\gamma_n(M)$</p>
+<p>$$\gamma_n(M)=\frac{m!(n-m-1)!}{n!}$$</p>
+<p>and $v()$ which is the characteristic function used for estimation of utility for each coalition. </p>
+<p>$M$ denotes to a coalition without the $j$th participant. and $M\cup{j}$ denotes to a coaltion including the $j$th participant. </p>
+<p>Here we define the characteristic function $v()$ via the $R^2$ values estimated by the results of regression modeling.<br>For example, if there are 5 elements, we have:</p>
+<p>$$v(0)=0, v(A)=R^2_A, v(AB)=R^2_{AB}, …, v(ABCDE)=R^2_{ABCDE}$$</p>
+<p>Also, we can simiplify the formula in this way:</p>
+<p>$$S_j=\sum\limits_{all\ M\ including\ j}\gamma_n(M)U_M$$</p>
+<p>And</p>
+<p>$$S_A = \frac{R^2_A-\bar{R}<em>1^2}{n-1}+\frac{\bar{R}^2</em>{A^{<em>}}-\bar{R}<em>2^2}{n-2}$+\frac{\bar{R}^2</em> {A^{<strong>}}-\bar{R}<em>3^2}{n-3}$+…+\frac{\bar{R}^2</em>{A^{</strong></em>}}-\bar{R}<em>1^2}{n-(n-1)}+\frac{R^2</em>{AB…N}}{n}$$</p>
 
         </div>
 
